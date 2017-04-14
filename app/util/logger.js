@@ -8,6 +8,7 @@ var logger = new winston.Logger({
     exitOnError: false
 });
 
+
 //winston.addColors(config.customColors);
 Object.keys(config.transports).forEach(function(transport){
     logger.add(winston.transports[transport.charAt(0).toUpperCase() + transport.slice(1).toLowerCase()],

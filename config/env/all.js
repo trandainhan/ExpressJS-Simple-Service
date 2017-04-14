@@ -8,7 +8,7 @@ module.exports =  {
         //winston config
         transports: {
             file: {
-                level: 'debug',
+                level: 'error',
                 filename: './logs/applog.log',
                 handleExceptions: true,
                 json: false,
@@ -17,7 +17,7 @@ module.exports =  {
             },
             console: {
                 level: 'debug',
-                handleExceptions: true,
+                handleExceptions: false,
                 json: false,
                 colorize: true
             }

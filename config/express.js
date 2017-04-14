@@ -8,7 +8,8 @@ var express = require('express'),
     config = require('./config'),
     logger = require('../app/util/logger'),
     fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    mongoose = require('mongoose');
 
 var baseRgx = /(.*).(js|coffee)$/;
 
@@ -22,7 +23,8 @@ module.exports = function() {
     app.set('showStackError', true);
 
     // Request body parsing middleware should be above methodOverride
-    app.use(bodyParser.json({ type: 'application/*', limit: '1mb' }));
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: false }));
     app.use(methodOverride());
 
     // Use helmet to secure Express headers
@@ -43,6 +45,8 @@ module.exports = function() {
         };
     };
     app.use(restreamer());
+
+    mongoose.connect(config.dbConnectionPool.database);
 
     function bootstrapRoutes() {
         // Skip the app/routes/middlewares directory as it is meant to be

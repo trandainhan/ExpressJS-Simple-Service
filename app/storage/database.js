@@ -1,6 +1,5 @@
 'use strict';
 
-var mysql = require('mysql');
 var config = require('../../config/config');
 var logger = require('../util/logger');
 var promise = require('promise');
@@ -8,7 +7,7 @@ var promise = require('promise');
 // initialize database connection
 var pool = mysql.createPool(config.dbConnectionPool);
 
-module.exports.executeStatement = function(statement, params) {
+exports.executeStatement = function(statement, params) {
     return new promise(function(resolved, rejected) {
         pool.getConnection(function(e, connection) {
             if(e)
@@ -36,7 +35,7 @@ module.exports.executeStatement = function(statement, params) {
     });
 };
 
-module.exports.executeStatementWithTransaction = function(statement, transaction, params) {
+exports.executeStatementWithTransaction = function(statement, transaction, params) {
     return new promise(function(resolved, rejected) {
         // Tries its best to prepare this in a safe manner.
         statement = mysql.format(statement, params);
@@ -55,7 +54,7 @@ module.exports.executeStatementWithTransaction = function(statement, transaction
     });
 };
 
-module.exports.beginTransaction = function() {
+exports.beginTransaction = function() {
     return new promise(function(resolved, rejected) {
         pool.getConnection(function(e, connection) {
             if(e)
@@ -71,7 +70,7 @@ module.exports.beginTransaction = function() {
     });
 };
 
-module.exports.commit = function(transaction) {
+exports.commit = function(transaction) {
     return new promise(function(resolved, rejected) {
         transaction.connection.commit(function(e)
         {
@@ -88,7 +87,7 @@ module.exports.commit = function(transaction) {
     });
 };
 
-module.exports.rollback = function(transaction) {
+exports.rollback = function(transaction) {
     return new promise(function(resolved, rejected) {
         transaction.connection.rollback(function() {
             transaction.connection.release();
